@@ -4,24 +4,19 @@ import React, { useState } from "react";
 import {
   createQuizInitialValues,
   createQuizValidationSchema,
+  handleSubmitQuiz,
 } from "../../helpers/CreateQuiz";
+import AddQuestion from "./AddQuestion";
 
-const CreateQuiz = () => {
-  const [showCreateQuizButton, setShowCreateQuizButton] = useState(true);
+const CreateQuiz = ({ setShowCreateQuizButton }) => {
+  const [addQuestion, setAddQuestion] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  const questions = [
-    {
-      question: {
-        label: "Title of Media",
-        size: "medium",
-        id: "title",
-      },
-      options: [{
-        lable: "option a",
-        size: ""
-      }],
-    },
-  ];
+  const [quiz, setQuiz] = useState({
+    quizOwner: currentUser[0].email,
+    quizTitle: "",
+    questions: [],
+  });
 
   const {
     values,
@@ -31,58 +26,100 @@ const CreateQuiz = () => {
     handleSubmit,
     isValid,
     touched,
+    resetForm,
   } = useFormik({
     initialValues: createQuizInitialValues,
     validationSchema: createQuizValidationSchema,
 
     onSubmit: () => {
-      console.log(values);
+      quiz.quizTitle = values.title;
+      handleSubmitQuiz(quiz);
+      setShowCreateQuizButton(true);
     },
   });
 
   return (
-    <div className="w-2/3 rounded-lg bg-slate-100 min-h-[50vh]">
-      {showCreateQuizButton ? (
-        <div className="flex justify-center items-center h-full ">
+    <form className="h-full" onSubmit={handleSubmit}>
+      <div className="px-5 flex flex-col py-2">
+        <TextField
+          label="Title of Quiz?"
+          size="medium"
+          id="title"
+          variant="standard"
+          onBlur={handleBlur}
+          value={values.title}
+          onChange={handleChange}
+          error={
+            errors.title
+              ? values.title || touched.title
+                ? true
+                : false
+              : false
+          }
+          helperText={
+            errors.title
+              ? values.title || touched.title
+                ? errors.title
+                : ""
+              : ""
+          }
+          type="text"
+        />
+        <div className="mt-5">
+          {quiz.questions &&
+            quiz.questions.map((item, index) => {
+              return (
+                <div key={index} className="flex space-x-5 text-2xl">
+                  <p>{index + 1}.</p>
+                  <p>{item.questionTitle}</p>
+                </div>
+              );
+            })}
+        </div>
+        <div className="my-5">
+          {addQuestion ? (
+            <>
+              <AddQuestion
+                quiz={quiz}
+                setQuiz={setQuiz}
+                setAddQuestion={setAddQuestion}
+              />
+            </>
+          ) : (
+            <div className="flex justify-center my-5">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setAddQuestion(true);
+                }}
+                className="w-1/3"
+              >
+                Add Question
+              </Button>
+            </div>
+          )}
+        </div>
+        <div className="flex justify-around my-24 ">
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setShowCreateQuizButton(true);
+            }}
+            className="w-1/3"
+          >
+            Cancel
+          </Button>
           <Button
             variant="contained"
-            onClick={() => {
-              setShowCreateQuizButton(false);
-            }}
+            type="submit"
+            className="w-1/3"
+            disabled={quiz.questions.length === 0 || !isValid}
           >
-            Create Quiz
+            Submit
           </Button>
         </div>
-      ) : (
-        <div className="pl-5 py-2">
-          <TextField
-            label="Title of Quiz?"
-            size="medium"
-            id="title"
-            variant="standard"
-            onBlur={handleBlur}
-            value={values.title}
-            onChange={handleChange}
-            error={
-              errors.title
-                ? values.title || touched.title
-                  ? true
-                  : false
-                : false
-            }
-            helperText={
-              errors.title
-                ? values.title || touched.title
-                  ? errors.title
-                  : ""
-                : ""
-            }
-            type="text"
-            className="w-2/3"
-          />
-        </div>
-      )}
-    </div>
+      </div>
+    </form>
   );
 };
 
