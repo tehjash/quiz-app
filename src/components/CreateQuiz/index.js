@@ -118,7 +118,7 @@ const CreateQuiz = ({ setShowCreateQuizButton }) => {
               className="w-1/3"
               disabled={quiz.questions.length === 0 || !isValid}
             >
-              Submit Quiz
+              Create Quiz
             </Button>
           </div>
         </div>
