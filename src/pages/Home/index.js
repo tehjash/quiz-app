@@ -8,7 +8,7 @@ const Homepage = () => {
   const [showCreateQuizButton, setShowCreateQuizButton] = useState(true);
   return (
     <>
-      <Navbar />
+      <Navbar showWelcome showLogoutButton />
       <div className="flex p-5 space-x-5">
         <div className="w-2/3 rounded-lg bg-slate-100 min-h-[50vh]">
           {showCreateQuizButton ? (

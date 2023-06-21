@@ -14,6 +14,7 @@ const CreateQuiz = ({ setShowCreateQuizButton }) => {
 
   const [quiz, setQuiz] = useState({
     quizOwner: currentUser[0].email,
+    quizId: "",
     quizTitle: "",
     questions: [],
   });
@@ -33,6 +34,7 @@ const CreateQuiz = ({ setShowCreateQuizButton }) => {
 
     onSubmit: () => {
       quiz.quizTitle = values.title;
+      quiz.quizId = Math.random().toString(36).substring(2, 8);
       handleSubmitQuiz(quiz);
       setShowCreateQuizButton(true);
     },
