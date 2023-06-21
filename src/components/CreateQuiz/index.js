@@ -41,87 +41,89 @@ const CreateQuiz = ({ setShowCreateQuizButton }) => {
   });
 
   return (
-    <form className="h-full" onSubmit={handleSubmit}>
-      <div className="px-5 flex flex-col py-2">
-        <TextField
-          label="Title of Quiz?"
-          size="medium"
-          id="title"
-          variant="standard"
-          onBlur={handleBlur}
-          value={values.title}
-          onChange={handleChange}
-          error={
-            errors.title
-              ? values.title || touched.title
-                ? true
+    <div>
+      <form className="h-full" onSubmit={handleSubmit}>
+        <div className="px-5 flex flex-col py-2">
+          <TextField
+            label="Title of Quiz?"
+            size="medium"
+            id="title"
+            variant="standard"
+            onBlur={handleBlur}
+            value={values.title}
+            onChange={handleChange}
+            error={
+              errors.title
+                ? values.title || touched.title
+                  ? true
+                  : false
                 : false
-              : false
-          }
-          helperText={
-            errors.title
-              ? values.title || touched.title
-                ? errors.title
+            }
+            helperText={
+              errors.title
+                ? values.title || touched.title
+                  ? errors.title
+                  : ""
                 : ""
-              : ""
-          }
-          type="text"
-        />
-        <div className="mt-5">
-          {quiz.questions &&
-            quiz.questions.map((item, index) => {
-              return (
-                <div key={index} className="flex space-x-5 text-2xl">
-                  <p>{index + 1}.</p>
-                  <p>{item.questionTitle}</p>
-                </div>
-              );
-            })}
+            }
+            type="text"
+          />
+          <div className="mt-5">
+            {quiz.questions &&
+              quiz.questions.map((item, index) => {
+                return (
+                  <div key={index} className="flex space-x-5 text-2xl">
+                    <p>{index + 1}.</p>
+                    <p>{item.questionTitle}</p>
+                  </div>
+                );
+              })}
+          </div>
+          <div className="my-5">
+            {addQuestion ? (
+              <>
+                <AddQuestion
+                  quiz={quiz}
+                  setQuiz={setQuiz}
+                  setAddQuestion={setAddQuestion}
+                />
+              </>
+            ) : (
+              <div className="flex justify-center my-5">
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setAddQuestion(true);
+                  }}
+                  className="w-1/3"
+                >
+                  Add Question
+                </Button>
+              </div>
+            )}
+          </div>
+          <div className="flex justify-around my-24 ">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setShowCreateQuizButton(true);
+              }}
+              className="w-1/3"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              className="w-1/3"
+              disabled={quiz.questions.length === 0 || !isValid}
+            >
+              Submit Quiz
+            </Button>
+          </div>
         </div>
-        <div className="my-5">
-          {addQuestion ? (
-            <>
-              <AddQuestion
-                quiz={quiz}
-                setQuiz={setQuiz}
-                setAddQuestion={setAddQuestion}
-              />
-            </>
-          ) : (
-            <div className="flex justify-center my-5">
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setAddQuestion(true);
-                }}
-                className="w-1/3"
-              >
-                Add Question
-              </Button>
-            </div>
-          )}
-        </div>
-        <div className="flex justify-around my-24 ">
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setShowCreateQuizButton(true);
-            }}
-            className="w-1/3"
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            type="submit"
-            className="w-1/3"
-            disabled={quiz.questions.length === 0 || !isValid}
-          >
-            Submit Quiz
-          </Button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
