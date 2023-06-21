@@ -2,7 +2,9 @@ import { Button } from "@mui/material";
 import React from "react";
 
 const Navbar = ({ showWelcome = false, showLogoutButton = false }) => {
-  const currentUserDetails = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUserDetails = JSON.parse(
+    localStorage.getItem("currentUser") || "[]"
+  );
 
   return (
     <div className="w-full py-2 px-5  flex flex-row items-center justify-between  bg-slate-400">

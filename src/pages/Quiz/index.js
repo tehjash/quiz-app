@@ -12,7 +12,7 @@ const Quiz = () => {
   const quiz = allQuizes.filter((e) => e.quizId === quizId);
 
   const totalNumberOfQuestions = quiz[0].questions.length;
-  console.log(score);
+
   return (
     <>
       <Navbar />

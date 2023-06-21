@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const YourCreatedQuizes = () => {
   const allQuizes = JSON.parse(localStorage.getItem("allQuizes") || "[]");
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const currentUserEmail = currentUser[0].email;
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "[]");
+  const currentUserEmail = currentUser[0]?.email;
 
   // filter users' quizes from all quizes using email
   const currentUserQuizes = allQuizes.filter(
@@ -17,7 +17,7 @@ const YourCreatedQuizes = () => {
       <div className="bg-slate-300 flex justify-center py-2">
         <p className="font-bold">Your Created Quizes</p>
       </div>
-      {currentUserQuizes.length > 0 &&
+      {currentUserQuizes && currentUserQuizes.length > 0 &&
         currentUserQuizes.map((item, index) => {
           return (
             <div

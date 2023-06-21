@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import CreateQuiz from "../../components/CreateQuiz";
 import YourCreatedQuizes from "../../components/YourCreatedQuizes";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const [showCreateQuizButton, setShowCreateQuizButton] = useState(true);
+  const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "[]");
+
+  useEffect(() => {
+    currentUser.length === 0 && navigate("/sign-in");
+  }, []);
+
   return (
     <>
       <Navbar showWelcome showLogoutButton />
